@@ -1,17 +1,30 @@
 import { Composer } from "grammy";
+import type { Ctx } from "../bot.js";
+import { inlineButton, inlineKeyboard, registerMainMenuItem } from "../toolkit/index.js";
+import { loadState, score } from "../trading/data.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-// Menu: wire this into /start via registerMainMenuItem({ label: "View performance", data: "performance:view" }) if the toolkit exposes it.
-
-const composer = new Composer();
+registerMainMenuItem({ label: "View performance", data: "performance:view", order: 20 });
+const composer = new Composer<Ctx>();
+const back = inlineKeyboard([[inlineButton("Back to menu", "menu:main")]]);
 
 composer.callbackQuery("performance:view", async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.reply("Show channel accuracy scores and trade history");
+  const state = await loadState(ctx);
+  if (state.channels.length === 0) {
+    await ctx.editMessageText("No channel performance yet — add a channel to begin tracking.", { reply_markup: back });
+    return;
+  }
+  const lines = state.channels
+    .slice()
+    .sort((a, b) => score(b) - score(a))
+    .map((channel) => {
+      const wins = channel.accuracyHistory.filter(Boolean).length;
+      const total = channel.accuracyHistory.length;
+      const accuracy = total === 0 ? "No closed trades" : `${Math.round((wins / total) * 100)}% accuracy`;
+      return `@${channel.username}: ${accuracy} · priority ${Math.round(score(channel))}`;
+    });
+  const history = state.trades.length === 0 ? "\n\nNo trades have been recorded yet." : `\n\nRecorded trades: ${state.trades.length}`;
+  await ctx.editMessageText(`Channel performance\n${lines.join("\n")}${history}`, { reply_markup: back });
 });
 
 export default composer;
