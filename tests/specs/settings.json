@@ -1,0 +1,9 @@
+[
+  {
+    "name": "Risk setting accepts a percentage",
+    "steps": [
+      { "send": { "callback": "settings:risk" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Your default risk is 1%. Send a new risk from 0.1 to 10." } }] },
+      { "send": { "text": "2" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Your default risk is now 2%." } }] }
+    ]
+  }
+]

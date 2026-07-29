@@ -1,19 +1,23 @@
 [
   {
-    "name": "Switch to Live account",
+    "name": "Switch to Live account with confirmation",
     "steps": [
       {
         "expect": [
           {
-            "method": "sendMessage",
+            "method": "editMessageText",
             "payload": {
-              "text": "Toggle between Demo and Live trading"
+              "text": "Switch to Live trading? Orders can use real funds."
             }
           }
         ],
         "send": {
           "callback": "account:switch"
         }
+      },
+      {
+        "send": { "callback": "account:live:yes" },
+        "expect": [{ "method": "editMessageText", "payload": { "text": "Trading is set to Live." } }]
       }
     ]
   }

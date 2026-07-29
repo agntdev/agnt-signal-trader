@@ -5,9 +5,9 @@
       {
         "expect": [
           {
-            "method": "sendMessage",
+            "method": "editMessageText",
             "payload": {
-              "text": "List current active trades with status"
+              "text": "No open trades yet — approved signals will appear here."
             }
           }
         ],

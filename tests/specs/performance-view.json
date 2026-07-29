@@ -5,9 +5,9 @@
       {
         "expect": [
           {
-            "method": "sendMessage",
+            "method": "editMessageText",
             "payload": {
-              "text": "Show channel accuracy scores and trade history"
+              "text": "No channel performance yet — add a channel to begin tracking."
             }
           }
         ],

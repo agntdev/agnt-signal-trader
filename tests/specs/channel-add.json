@@ -1,19 +1,27 @@
 [
   {
-    "name": "Add channel",
+    "name": "Add channel flow",
     "steps": [
       {
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Configure new signal channel to monitor"
+              "text": "Send the channel username, without @."
             }
           }
         ],
         "send": {
           "callback": "channel:add"
         }
+      },
+      {
+        "send": { "text": "SignalDesk" },
+        "expect": [{ "method": "sendMessage", "payload": { "text": "Send its priority weight from 1 to 100." } }]
+      },
+      {
+        "send": { "text": "20" },
+        "expect": [{ "method": "sendMessage", "payload": { "text": "Monitoring @signaldesk. Its priority weight is 20." } }]
       }
     ]
   }
