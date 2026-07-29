@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Switch to Live account",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Toggle between Demo and Live trading"
+            }
+          }
+        ],
+        "send": {
+          "callback": "account:switch"
+        }
+      }
+    ]
+  }
+]
