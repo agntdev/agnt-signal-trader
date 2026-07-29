@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Check open trades",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "List current active trades with status"
+            }
+          }
+        ],
+        "send": {
+          "callback": "trades:open"
+        }
+      }
+    ]
+  }
+]
